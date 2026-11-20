@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MindResort</title>
+<meta name="description" content="WonGary 的个人站点：小游戏和小作品的度假村。">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* Layout: a resort lobby — big name sign, then a floor directory where each project is a "room" with a room number, then a seed lounge, then the front desk */
+:root{
+  --bg:#edf2ef; --panel:#f8faf8; --ink:#14232b; --muted:#56666c; --line:#c9d4cf;
+  --pool:#167f8c; --pool-soft:#d3e8e7; --gold:#b9852a; --felt:#15203a; --on-felt:#ece6d6;
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-cjk:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e171c; --panel:#142027; --ink:#e3ebe8; --muted:#93a4a8; --line:#24353c;
+  --pool:#4fc0cb; --pool-soft:#173a40; --gold:#e3b456; --felt:#1b2848; --on-felt:#ece6d6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e171c; --panel:#142027; --ink:#e3ebe8; --muted:#93a4a8; --line:#24353c;
+  --pool:#4fc0cb; --pool-soft:#173a40; --gold:#e3b456; --felt:#1b2848; --on-felt:#ece6d6; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--pool);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.top a{text-decoration:none}
+.top a:hover{color:var(--pool)}
+.top nav{display:flex;gap:18px}
+
+/* hero sign */
+.hero{padding-block:clamp(40px,9vw,110px) clamp(36px,6vw,72px);border-bottom:1px solid var(--line);display:grid;gap:28px}
+.sign{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(56px,13vw,156px);line-height:.88;letter-spacing:-.045em}
+.sign span{display:block}
+.sign .r{color:var(--pool);padding-left:.55em}
+.sub{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 24px;align-items:baseline;max-width:640px}
+.cn{font-family:var(--f-cjk);font-weight:900;font-size:clamp(26px,4vw,36px);letter-spacing:.12em;line-height:1.2}
+.lede{margin:0;color:var(--muted);text-wrap:pretty}
+.ripple{height:14px;max-width:420px;color:var(--pool);opacity:.6}
+
+/* section heads */
+section{padding-block:56px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.sh h2{margin:0;font-family:var(--f-cjk);font-weight:600;font-size:clamp(22px,3vw,28px);letter-spacing:.06em;text-wrap:balance}
+.sh .k{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+
+/* floor directory */
+.rooms{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px}
+.room{position:relative;display:grid;border-radius:14px;overflow:hidden;text-decoration:none;min-width:0}
+.room .no{font-family:var(--f-mono);font-weight:600;font-size:13px;letter-spacing:.12em}
+.room h3{margin:0;font-family:var(--f-cjk);font-weight:900;letter-spacing:.06em;line-height:1.15}
+.room p{margin:0;text-wrap:pretty}
+
+.feat{background:var(--felt);color:var(--on-felt);grid-template-columns:minmax(0,1fr) auto;gap:20px;padding:28px;min-height:300px;transition:transform .2s}
+.feat:hover{transform:translateY(-3px)}
+.feat .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+.feat .no{color:#e3b456}
+.feat h3{font-size:clamp(34px,5vw,48px)}
+.feat p{color:#b9c2d8;max-width:30ch}
+.feat .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.feat .tags span{font-size:12px;padding:2px 9px;border:1px solid rgba(225,214,186,.28);border-radius:999px;color:#d8d0bc}
+.feat .go{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#1d1a12;background:#e3b456;border-radius:999px;padding:8px 18px;align-self:flex-start;font-size:15px}
+.fan{position:relative;width:150px;height:180px;align-self:center}
+.fan .c{position:absolute;left:40px;top:20px;width:84px;height:118px;border-radius:9px;background:#fffdf7;border:1px solid #cdbf9f;box-shadow:0 6px 16px rgba(0,0,0,.35);transform-origin:50% 120%;font-family:"Barlow Condensed","Arial Narrow",sans-serif;padding:6px 8px;line-height:.95;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.fan .c b{display:block;font-size:30px}
+.fan .c i{font-style:normal;font-size:22px}
+.fan .c:nth-child(1){transform:rotate(-24deg);color:#1c1c24}
+.fan .c:nth-child(2){transform:rotate(-8deg);color:#cf2f28}
+.fan .c:nth-child(3){transform:rotate(8deg);color:#1d7a3c}
+.fan .c:nth-child(4){transform:rotate(24deg);color:#cf2f28;background:#fff3cf;border-color:#e3b456}
+.feat:hover .fan .c:nth-child(1){transform:rotate(-32deg)}
+.feat:hover .fan .c:nth-child(2){transform:rotate(-11deg)}
+.feat:hover .fan .c:nth-child(3){transform:rotate(11deg)}
+.feat:hover .fan .c:nth-child(4){transform:rotate(32deg)}
+
+.side{display:grid;gap:20px;grid-template-rows:1fr 1fr}
+.soon{background:var(--panel);border:1px dashed var(--line);padding:22px;gap:8px;align-content:start;color:var(--muted)}
+.soon .no{color:var(--muted)}
+.soon h3{font-size:22px;color:var(--ink)}
+
+/* seed lounge */
+.lounge{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.shelf{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;min-width:0}
+.shelf h3{margin:0 0 4px;font-size:17px;display:flex;align-items:center;gap:8px}
+.shelf h3 .dot{width:10px;height:10px;border-radius:50%;background:var(--pool)}
+.shelf.bad h3 .dot{background:#c2402f}
+.shelf .note{margin:0 0 14px;font-size:13px;color:var(--muted)}
+.seeds{list-style:none;margin:0;padding:0;display:grid}
+.seeds li+li{border-top:1px solid var(--line)}
+.seeds a{display:grid;grid-template-columns:7.5em minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:10px 4px;text-decoration:none}
+.seeds a:hover{background:var(--pool-soft)}
+.seeds code{font-family:var(--f-mono);font-weight:600;font-size:15px;letter-spacing:.12em;color:var(--pool)}
+.shelf.bad .seeds code{color:#c2402f}
+.seeds span{font-size:14px;min-width:0}
+.seeds em{font-style:normal;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+
+/* front desk */
+.desk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.desk p{margin:0;max-width:44ch;color:var(--muted)}
+.links{display:grid;gap:10px}
+.links a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--line);border-radius:12px;text-decoration:none;background:var(--panel);font-weight:500}
+.links a:hover{border-color:var(--pool);color:var(--pool)}
+.links small{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+
+footer{border-top:1px solid var(--line);padding-block:24px 40px;font-family:var(--f-mono);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:760px){
+  .rooms,.lounge,.desk{grid-template-columns:minmax(0,1fr)}
+  .side{grid-template-rows:none}
+  .feat{grid-template-columns:minmax(0,1fr);min-height:0}
+  .fan{order:-1;width:150px;height:150px;justify-self:center}
+  .sub{grid-template-columns:minmax(0,1fr)}
+  .seeds a{grid-template-columns:6.6em minmax(0,1fr)}
+  .seeds em{display:none}
+}
+@media (prefers-reduced-motion:reduce){.feat,.fan .c{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a href="./">WonGary</a>
+    <nav><a href="#rooms">房间</a><a href="#lounge">种子</a><a href="#desk">前台</a></nav>
+  </header>
+
+  <div class="hero">
+    <h1 class="sign"><span>Mind</span><span class="r">Resort</span></h1>
+    <div class="sub">
+      <div class="cn">心境度假村</div>
+      <p class="lede">这里放我做的小游戏和小作品。进来坐坐，挑个房间玩一会儿。</p>
+    </div>
+    <svg class="ripple" viewBox="0 0 420 14" preserveAspectRatio="none" aria-hidden="true"><path d="M0 7 Q 17.5 0 35 7 T 70 7 T 105 7 T 140 7 T 175 7 T 210 7 T 245 7 T 280 7 T 315 7 T 350 7 T 385 7 T 420 7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+  </div>
+
+  <section id="rooms">
+    <div class="sh"><h2>楼层指南</h2><span class="k">Floor directory · 1F</span></div>
+    <div class="rooms">
+      <a class="room feat" href="guandan/">
+        <div class="txt">
+          <span class="no">ROOM 101</span>
+          <h3>掼蛋牌桌</h3>
+          <p>两副牌、四个人、打到 A。你和 AI 对家搭档，对手会记牌，也会算概率。</p>
+          <div class="tags"><span>进贡还贡</span><span>逢人配</span><span>AI 出牌推荐</span><span>种子开局</span></div>
+          <span class="go">入座 →</span>
+        </div>
+        <div class="fan" aria-hidden="true">
+          <div class="c"><b>A</b><i>♠</i></div>
+          <div class="c"><b>K</b><i>♥</i></div>
+          <div class="c"><b>Q</b><i>♣</i></div>
+          <div class="c"><b>2</b><i>♥</i></div>
+        </div>
+      </a>
+      <div class="side">
+        <div class="room soon"><span class="no">ROOM 102</span><h3>装修中</h3><p>下一个小作品正在搭。</p></div>
+        <div class="room soon"><span class="no">ROOM 103</span><h3>空房</h3><p>有想玩的点子，可以去 GitHub 告诉我。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lounge">
+    <div class="sh"><h2>种子收藏</h2><span class="k">Seed lounge · 掼蛋</span></div>
+    <div class="lounge">
+      <div class="shelf">
+        <h3><span class="dot"></span>逆天好牌</h3>
+        <p class="note">点开直接进牌局，第 1 局你拿到的就是这手牌。</p>
+        <ul class="seeds">
+          <li><a href="guandan/#WUWAL4"><code>WUWAL4</code><span>三条皇家同花顺</span><em>1 局</em></a></li>
+          <li><a href="guandan/#8XYHMQ"><code>8XYHMQ</code><span>天王炸 + 两条同花顺</span><em>1 局</em></a></li>
+          <li><a href="guandan/#9T45P6"><code>9T45P6</code><span>五个炸弹 + 两张配</span><em>1 局</em></a></li>
+          <li><a href="guandan/#CVT4MU"><code>CVT4MU</code><span>9 张 K 炸弹</span><em>1 局</em></a></li>
+          <li><a href="guandan/#NMZYWV"><code>NMZYWV</code><span>连续三局好牌</span><em>3 局</em></a></li>
+        </ul>
+      </div>
+      <div class="shelf bad">
+        <h3><span class="dot"></span>逆天烂牌</h3>
+        <p class="note">没有王、没有炸、没有配。看你能不能带着 AI 队友翻盘。</p>
+        <ul class="seeds">
+          <li><a href="guandan/#T543NE"><code>T543NE</code><span>连续三局一无所有</span><em>3 局</em></a></li>
+          <li><a href="guandan/#M2CG52"><code>M2CG52</code><span>前两局零牌力</span><em>3 局</em></a></li>
+          <li><a href="guandan/#HPM6SN"><code>HPM6SN</code><span>开局全是散牌</span><em>1 局</em></a></li>
+          <li><a href="guandan/#V6RB47"><code>V6RB47</code><span>开局全是散牌</span><em>1 局</em></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="desk">
+    <div class="sh"><h2>前台</h2><span class="k">Front desk</span></div>
+    <div class="desk">
+      <p>这里的作品都是单页网页，打开就能玩，手机也行。发现 bug 或者有新点子，欢迎在 GitHub 上找我。</p>
+      <div class="links">
+        <a href="https://github.com/WonGary" rel="noopener">GitHub <small>@WonGary</small></a>
+        <a href="https://github.com/WonGary/wongary.github.io" rel="noopener">本站源码 <small>wongary.github.io</small></a>
+      </div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 MindResort</span><span>wongary.github.io</span></footer>
+</div>
+
+</body>
+</html>
