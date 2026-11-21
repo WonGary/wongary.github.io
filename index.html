@@ -10,6 +10,17 @@
     />
     <meta name="theme-color" content="#f5f3ee" />
     <title data-i18n="page.title">Zhixiang Wan | Climate &amp; planetary science</title>
+    <script>
+      // Apply the saved or system theme before first paint.
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem("homepage-theme"); } catch (e) {}
+        if (theme !== "light" && theme !== "dark") {
+          theme = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -24,9 +35,9 @@
       </a>
 
       <nav class="desktop-nav" aria-label="Main navigation" data-i18n-aria="nav.aria">
-        <a href="#about" data-i18n="nav.about">Background</a>
+        <a href="#about" data-i18n="nav.about">About</a>
         <a href="#research" data-i18n="nav.research">Research</a>
-        <a href="#projects" data-i18n="nav.projects">Projects</a>
+        <a href="#publications" data-i18n="nav.publications">Publications</a>
         <a href="#contact" data-i18n="nav.contact">Contact</a>
       </nav>
 
@@ -35,155 +46,181 @@
           <button class="language-button is-active" type="button" data-language-button="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
           <button class="language-button" type="button" data-language-button="zh" lang="zh-CN" aria-label="中文" aria-pressed="false">中文</button>
         </div>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <button class="icon-button theme-toggle" type="button" aria-label="Switch to dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z" /></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" /></svg>
+        </button>
+        <button class="icon-button menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
           <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
         </button>
       </div>
 
       <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" data-i18n-aria="nav.mobileAria" hidden>
-        <a href="#about" data-i18n="nav.about">Background</a>
+        <a href="#about" data-i18n="nav.about">About</a>
         <a href="#research" data-i18n="nav.research">Research</a>
-        <a href="#projects" data-i18n="nav.projects">Projects</a>
+        <a href="#publications" data-i18n="nav.publications">Publications</a>
         <a href="#contact" data-i18n="nav.contact">Contact</a>
       </nav>
     </header>
 
     <main id="top" tabindex="-1">
-      <section class="hero section-wrap">
-        <div class="hero-copy">
-          <p class="eyebrow">
-            <span class="eyebrow-dot"></span>
-            <span data-i18n="hero.eyebrow">Climate &amp; planetary science</span>
-          </p>
-          <h1>
-            <span class="hero-name" data-i18n="hero.title">Zhixiang Wan</span>
-            <span class="hero-name-alt" data-i18n="hero.nameAlt">万智翔 · Gary Won</span>
-          </h1>
-          <p class="hero-lede" data-i18n="hero.lede">
-            I use climate models to study the atmospheres of Earth and Mars. I also work on transmission spectra of exoplanets.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#research">
-              <span data-i18n="hero.primary">Research interests</span>
-              <span class="button-arrow" aria-hidden="true">↘</span>
-            </a>
-            <a class="button button-quiet" href="#about" data-i18n="hero.secondary">Academic background</a>
-          </div>
-        </div>
-
-        <figure class="hero-visual">
-          <div class="visual-frame">
-            <img
-              src="assets/earth-limb-nasa.jpg"
-              width="720" height="480"
-              alt="Earth's blue atmospheric limb with a crescent moon above it"
-              data-i18n-attr="alt:hero.imageAlt"
-            />
-            <div class="visual-overlay"></div>
-            <div class="visual-label visual-label-bottom">
-              <span data-i18n="hero.visualLabel">Earth's limb with a crescent moon</span>
-              <small data-i18n="hero.credit">NASA · ISS Expedition 66</small>
+      <div class="layout section-wrap">
+        <aside class="profile" aria-label="Profile" data-i18n-aria="profile.aria">
+          <div class="profile-card">
+            <figure class="profile-cover">
+              <img
+                src="assets/earth-limb-nasa.jpg"
+                width="720" height="480"
+                alt="Earth's blue atmospheric limb with a crescent moon above it"
+                data-i18n-attr="alt:hero.imageAlt"
+              />
+              <figcaption>
+                <a href="https://science.nasa.gov/earth/earth-observatory/earths-limb-with-a-crescent-moon-150240/" data-i18n="hero.credit">NASA · ISS066-E-86970</a>
+              </figcaption>
+            </figure>
+            <div class="profile-body">
+              <span class="avatar" aria-hidden="true">ZW</span>
+              <h1>
+                <span class="profile-name" data-i18n="hero.title">Zhixiang Wan</span>
+                <span class="profile-name-alt" data-i18n="hero.nameAlt">万智翔 · Gary Won</span>
+              </h1>
+              <p class="profile-role" data-i18n="profile.role">PhD student</p>
+              <p class="profile-affiliation">
+                <span data-i18n="about.department">Department of Atmospheric and Oceanic Sciences, School of Physics</span><br />
+                <span data-i18n="about.university">Peking University</span>
+              </p>
+              <ul class="profile-links">
+                <li>
+                  <a href="mailto:zx.wan@pku.edu.cn" aria-label="Email" data-i18n-aria="links.email" title="zx.wan@pku.edu.cn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://faculty.pku.edu.cn/yyhu/en/zdylm/24959/list/index.htm" aria-label="Research group" data-i18n-aria="links.group" data-i18n-attr="href:about.groupUrl" title="Yongyun Hu’s research group">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5M5 10v8M9.7 10v8M14.3 10v8M19 10v8M3 20h18" /></svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/WonGary" aria-label="GitHub" title="GitHub">
+                    <svg class="filled" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-          <figcaption class="visual-side-note">
-            <a href="https://science.nasa.gov/earth/earth-observatory/earths-limb-with-a-crescent-moon-150240/" aria-label="NASA photograph ISS066-E-86970" data-i18n-aria="hero.source">ISS066-E-86970</a>
-          </figcaption>
-        </figure>
-      </section>
+        </aside>
 
-      <section class="section-wrap about-section" id="about">
-        <div class="about-layout">
-          <h2 data-i18n="hero.secondary">Academic background</h2>
-          <div class="about-copy">
-            <h3 data-i18n="about.university">Peking University</h3>
-            <p data-i18n="about.department">Department of Atmospheric and Oceanic Sciences, School of Physics</p>
-            <p data-i18n="about.education">I began my doctoral studies in 2022.</p>
-            <a class="text-link" href="https://faculty.pku.edu.cn/yyhu/en/zdylm/24959/list/index.htm" data-i18n-attr="href:about.groupUrl"><span data-i18n="about.group">Yongyun Hu’s research group</span> <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </section>
+        <div class="content">
+          <section class="block" id="about">
+            <p class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              <span data-i18n="hero.eyebrow">Climate &amp; planetary science</span>
+            </p>
+            <h2 data-i18n="about.title">About me</h2>
+            <div class="prose">
+              <p data-i18n="about.p1">
+                I am a PhD student in the Department of Atmospheric and Oceanic Sciences at Peking University, where I began my doctoral studies in 2022 as a member of Yongyun Hu’s research group.
+              </p>
+              <p data-i18n="about.p2">
+                I use climate models to study the atmospheres of Earth and Mars. On Earth, I look at how gravity and radiation shape temperature and the energy budget at the top of the atmosphere. On Mars, I model the transport of dust and water vapor and how dust and water-ice clouds change the way radiation passes through the atmosphere. I also work on exoplanet transmission spectra, asking how noise, calibration, and observing strategy limit what we can learn about a planet’s atmosphere.
+              </p>
+            </div>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#research">
+                <span data-i18n="hero.primary">Research interests</span>
+                <span aria-hidden="true">↘</span>
+              </a>
+              <a class="button button-quiet" href="mailto:zx.wan@pku.edu.cn" data-i18n="hero.email">Get in touch</a>
+            </div>
 
-      <section class="section-wrap research-section" id="research">
-        <h2 data-i18n="hero.primary">Research interests</h2>
-        <div class="research-grid">
-          <article class="research-card research-card-sage" id="earth35">
-            <div class="card-topline" data-i18n="research.earth.tag">Earth</div>
-            <h3 data-i18n="research.earth.title">Gravity and energy balance</h3>
-            <p data-i18n="research.earth.body">
-              I compare simulated temperatures and the energy budget at the top of the atmosphere to study how gravity and radiation affect Earth’s climate.
-            </p>
-          </article>
-          <article class="research-card research-card-coral" id="mars15">
-            <div class="card-topline" data-i18n="research.mars.tag">Mars</div>
-            <h3 data-i18n="research.mars.title">Dust and water ice</h3>
-            <p data-i18n="research.mars.body">
-              I model the transport of water vapor and dust on Mars, and how dust and ice clouds affect the passage of radiation through the atmosphere.
-            </p>
-          </article>
-          <article class="research-card research-card-blue" id="model-description">
-            <div class="card-topline" data-i18n="research.model.tag">Climate models</div>
-            <h3 data-i18n="research.model.title">Martian circulation</h3>
-            <p data-i18n="research.model.body">
-              I document the physics of a Mars general circulation model and use its output to examine atmospheric processes.
-            </p>
-          </article>
-          <article class="research-card research-card-ink" id="jwst-spectrum">
-            <div class="card-topline" data-i18n="research.jwst.tag">Exoplanets</div>
-            <h3 data-i18n="research.jwst.title">Transmission spectra</h3>
-            <p data-i18n="research.jwst.body">
-              I study how noise, instrument calibration, and observing strategy affect what we can infer from transmission spectra.
-            </p>
-          </article>
-        </div>
-      </section>
+            <div class="facts">
+              <div class="fact">
+                <h3 class="fact-title">
+                  <span class="fact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5L2 9Z" /><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6" /></svg>
+                  </span>
+                  <span data-i18n="education.title">Education</span>
+                </h3>
+                <ol class="timeline">
+                  <li>
+                    <strong data-i18n="education.phd">Doctoral studies, Atmospheric and Oceanic Sciences</strong>
+                    <span data-i18n="about.university">Peking University</span>
+                    <time data-i18n="education.phdYears">2022 – present</time>
+                  </li>
+                </ol>
+              </div>
+              <div class="fact">
+                <h3 class="fact-title">
+                  <span class="fact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z" /></svg>
+                  </span>
+                  <span data-i18n="interests.title">Interests</span>
+                </h3>
+                <ul class="chips">
+                  <li data-i18n="interests.earth">Earth climate modeling</li>
+                  <li data-i18n="interests.mars">Mars atmosphere</li>
+                  <li data-i18n="interests.planetary">Planetary atmospheres</li>
+                  <li data-i18n="interests.radiation">Radiative transfer</li>
+                  <li data-i18n="interests.clouds">Clouds and dust</li>
+                  <li data-i18n="interests.exoplanets">Exoplanet spectroscopy</li>
+                </ul>
+              </div>
+            </div>
+          </section>
 
-      <section class="section-wrap projects-section" id="projects">
-        <h2 data-i18n="projects.title">Research projects</h2>
-        <div class="project-list">
-          <a class="project-row" href="#earth35">
-            <span class="project-main">
-              <strong>Earth35</strong>
-              <small data-i18n="projects.earth">Earth climate model experiments and multi-year diagnostics</small>
-            </span>
-            <span class="project-type" data-i18n="projects.modeling">Modeling</span>
-            <span class="project-arrow" aria-hidden="true">↑</span>
-          </a>
-          <a class="project-row" href="#mars15">
-            <span class="project-main">
-              <strong>Mars15</strong>
-              <small data-i18n="projects.mars">Mars atmosphere, dust, clouds, and radiative transfer</small>
-            </span>
-            <span class="project-type" data-i18n="projects.modeling">Modeling</span>
-            <span class="project-arrow" aria-hidden="true">↑</span>
-          </a>
-          <a class="project-row" href="#model-description">
-            <span class="project-main">
-              <strong>ModelDescription2025</strong>
-              <small data-i18n="projects.manuscript">Mars global climate model description and manuscript</small>
-            </span>
-            <span class="project-type" data-i18n="projects.manuscriptType">Manuscript</span>
-            <span class="project-arrow" aria-hidden="true">↑</span>
-          </a>
-          <a class="project-row" href="#jwst-spectrum">
-            <span class="project-main">
-              <strong data-i18n="projects.jwstName">JWST transmission spectra</strong>
-              <small data-i18n="projects.jwst">Exoplanet transmission spectra and observation design</small>
-            </span>
-            <span class="project-type" data-i18n="projects.spectroscopy">Spectroscopy</span>
-            <span class="project-arrow" aria-hidden="true">↑</span>
-          </a>
+          <section class="block" id="research">
+            <h2 data-i18n="nav.research">Research</h2>
+            <div class="research-grid">
+              <article class="research-card research-card-sage">
+                <div class="card-topline" data-i18n="research.earth.tag">Earth</div>
+                <h3 data-i18n="research.earth.title">Gravity and energy balance</h3>
+                <p data-i18n="research.earth.body">
+                  I compare simulated temperatures and the energy budget at the top of the atmosphere to study how gravity and radiation affect Earth’s climate.
+                </p>
+              </article>
+              <article class="research-card research-card-coral">
+                <div class="card-topline" data-i18n="research.mars.tag">Mars</div>
+                <h3 data-i18n="research.mars.title">Dust and water ice</h3>
+                <p data-i18n="research.mars.body">
+                  I model the transport of water vapor and dust on Mars, and how dust and ice clouds affect the passage of radiation through the atmosphere.
+                </p>
+              </article>
+              <article class="research-card research-card-blue">
+                <div class="card-topline" data-i18n="research.model.tag">Climate models</div>
+                <h3 data-i18n="research.model.title">Martian circulation</h3>
+                <p data-i18n="research.model.body">
+                  I document the physics of a Mars general circulation model and use its output to examine atmospheric processes.
+                </p>
+              </article>
+              <article class="research-card research-card-ink">
+                <div class="card-topline" data-i18n="research.jwst.tag">Exoplanets</div>
+                <h3 data-i18n="research.jwst.title">Transmission spectra</h3>
+                <p data-i18n="research.jwst.body">
+                  I study how noise, instrument calibration, and observing strategy affect what we can infer from transmission spectra.
+                </p>
+              </article>
+            </div>
+          </section>
+
+          <section class="block" id="publications">
+            <h2 data-i18n="pubs.title">Publications &amp; presentations</h2>
+            <ol class="pub-list">
+              <li class="pub">
+                <span class="pub-year">2026</span>
+                <div class="pub-body">
+                  <a class="pub-title" lang="en" href="https://doi.org/10.5194/egusphere-egu26-10203">Can High-altitude Water-ice Clouds Sustain Dry–wet Cycles in Early Mars Climate?</a>
+                  <p class="pub-authors" lang="en">Feng Ding, <strong>Zhixiang Wan</strong>, Robin Wordsworth</p>
+                  <p class="pub-venue" data-i18n="abstract.venue">EGU General Assembly 2026, conference abstract</p>
+                  <div class="pub-tags">
+                    <span class="tag" data-i18n="abstract.label">Abstract</span>
+                    <a class="tag tag-link" href="https://doi.org/10.5194/egusphere-egu26-10203">DOI ↗</a>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </section>
         </div>
-        <article class="abstract">
-          <div>
-            <h3 data-i18n="abstract.label">Conference abstract</h3>
-            <p data-i18n="abstract.venue">EGU General Assembly 2026</p>
-          </div>
-          <div>
-            <a class="text-link" lang="en" href="https://doi.org/10.5194/egusphere-egu26-10203">Can High-altitude Water-ice Clouds Sustain Dry–wet Cycles in Early Mars Climate? <span aria-hidden="true">↗</span></a>
-            <p lang="en">Feng Ding, <strong>Zhixiang Wan</strong>, Robin Wordsworth</p>
-          </div>
-        </article>
-      </section>
+      </div>
 
       <section class="contact-section" id="contact">
         <div class="contact-inner section-wrap">
