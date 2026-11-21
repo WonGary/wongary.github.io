@@ -243,6 +243,7 @@ h2 { font-size: 40px; text-wrap: balance; }
 .fact-icon svg { width: 20px; height: 20px; }
 .timeline li { display: grid; gap: 2px; padding: 2px 0 2px 18px; border-left: 2px solid var(--rule); position: relative; }
 .timeline li::before { content: ""; position: absolute; left: -6px; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--rust); }
+.timeline li + li { margin-top: 14px; }
 .timeline strong { font-weight: 600; line-height: 1.4; }
 .timeline span, .timeline time { color: var(--muted); font-size: 14px; }
 .timeline time { font-family: var(--mono); font-size: 12px; }
