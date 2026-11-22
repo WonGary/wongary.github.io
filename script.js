@@ -19,7 +19,9 @@ const chinese = {
   "hero.title": "万智翔",
   "hero.nameAlt": "Zhixiang Wan · Gary Won",
   "hero.primary": "研究方向",
-  "hero.cv": "下载简历（英文 PDF）",
+  "hero.cv": "下载中文简历（PDF）",
+  "hero.cvUrl": "assets/Zhixiang_Wan_CV_zh.pdf",
+  "hero.cvLanguage": "zh-CN",
   "hero.email": "联系我",
   "hero.imageAlt": "蓝色的地球大气边缘上方悬着一弯月牙。",
   "hero.credit": "NASA 原图 ISS066-E-86970",
@@ -78,15 +80,17 @@ const labels = {
   zh: { open: "打开菜单", close: "收起菜单", dark: "切换到深色模式", light: "切换到浅色模式" },
 };
 
-// Capture the English fallback once. An element may carry text, aria-label and one other attribute.
+// Capture the English values before applying the first translation.
 const fields = [];
 for (const element of document.querySelectorAll("[data-i18n], [data-i18n-aria], [data-i18n-attr]")) {
   const { i18n, i18nAria, i18nAttr } = element.dataset;
   if (i18n) fields.push({ element, attribute: null, key: i18n, english: element.textContent.trim() });
   if (i18nAria) fields.push({ element, attribute: "aria-label", key: i18nAria, english: element.getAttribute("aria-label") });
   if (i18nAttr) {
-    const [attribute, key] = i18nAttr.split(":");
-    fields.push({ element, attribute, key, english: element.getAttribute(attribute) });
+    for (const binding of i18nAttr.trim().split(/\s+/)) {
+      const [attribute, key] = binding.split(":");
+      fields.push({ element, attribute, key, english: element.getAttribute(attribute) });
+    }
   }
 }
 
